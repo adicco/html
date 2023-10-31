@@ -3,6 +3,9 @@
 // Missing something? Please submit a issue report or a PR:
 // https://github.com/kitajs/html
 
+/** Same as a string type but allows autocompletion of literal values */
+type AnyString = string & {};
+
 declare namespace JSX {
   /**
    * A {@linkcode JSX.Element} will always be a string, unless one of its children is a
@@ -76,7 +79,18 @@ declare namespace JSX {
     hreflang?: undefined | string;
     target?: undefined | string;
     download?: undefined | string;
-    referrerpolicy?: undefined | string;
+    referrerpolicy?:
+      | undefined
+      | ''
+      | 'no-referrer'
+      | 'no-referrer-when-downgrade'
+      | 'origin'
+      | 'origin-when-cross-origin'
+      | 'same-origin'
+      | 'strict-origin'
+      | 'strict-origin-when-cross-origin'
+      | 'unsafe-url'
+      | AnyString;
     ping?: undefined | string;
     rel?: undefined | string;
     media?: undefined | string;
@@ -179,13 +193,30 @@ declare namespace JSX {
   }
 
   interface HtmlIFrameTag extends HtmlTag {
+    allow?: undefined | string;
+    allowfullscreen?: undefined | boolean | string;
+    allowpaymentrequest?: undefined | boolean | string;
+    credentialless?: undefined | boolean | string;
+    height?: undefined | string;
+    loading?: undefined | string;
+    name?: undefined | string;
+    referrerpolicy?:
+      | undefined
+      | ''
+      | 'no-referrer'
+      | 'no-referrer-when-downgrade'
+      | 'origin'
+      | 'origin-when-cross-origin'
+      | 'same-origin'
+      | 'strict-origin'
+      | 'strict-origin-when-cross-origin'
+      | 'unsafe-url'
+      | AnyString;
+    sandbox?: undefined | boolean | string;
     src?: undefined | string;
     srcdoc?: undefined | string;
-    name?: undefined | string;
-    sandbox?: undefined | string;
     seamless?: undefined | string;
     width?: undefined | string;
-    height?: undefined | string;
   }
 
   interface HtmlImageTag extends HtmlTag {
@@ -196,6 +227,9 @@ declare namespace JSX {
     ismap?: undefined | string;
     width?: undefined | number | string;
     height?: undefined | number | string;
+    decoding?: 'sync' | 'async' | 'auto' | AnyString;
+    loading?: 'eager' | 'lazy' | AnyString;
+    srcset?: string;
   }
 
   interface HtmlInputTag extends HtmlTag {
@@ -211,7 +245,8 @@ declare namespace JSX {
     height?: undefined | string;
     list?: undefined | string;
     max?: undefined | string;
-    maxlength?: undefined | string;
+    minlength?: undefined | number | string;
+    maxlength?: undefined | number | string;
     method?: undefined | string;
     min?: undefined | string;
     multiple?: undefined | string;
@@ -271,6 +306,7 @@ declare namespace JSX {
 
   interface HtmlMetaTag extends HtmlTag {
     name?: undefined | string;
+    property?: undefined | string;
     ['http-equiv']?: undefined | string;
     content?: undefined | string;
     charset?: undefined | string;
@@ -308,7 +344,7 @@ declare namespace JSX {
   interface HtmlOptionTag extends HtmlTag {
     disabled?: undefined | boolean;
     label?: undefined | string;
-    selected?: undefined | string;
+    selected?: undefined | boolean | string;
     value?: undefined | string;
   }
 
@@ -401,8 +437,8 @@ declare namespace JSX {
     dirname?: undefined | string;
     disabled?: undefined | boolean;
     form?: undefined | string;
-    maxlength?: undefined | string;
-    minlength?: undefined | string;
+    maxlength?: undefined | number | string;
+    minlength?: undefined | number | string;
     name?: undefined | string;
     placeholder?: undefined | string;
     readonly?: undefined | string;

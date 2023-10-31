@@ -1,9 +1,12 @@
 {
   "name": "@kitajs/html",
-  "version": "3.0.1",
+  "version": "3.0.5",
   "description": "Fast and type safe HTML templates using TypeScript.",
   "bugs": "https://github.com/kitajs/html/issues",
-  "repository": "https://github.com/kitajs/html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kitajs/html.git"
+  },
   "funding": "https://github.com/kitajs/html?sponsor=1",
   "license": "Apache-2.0",
   "author": "arthurfiorette <npm@arthur.place>",
@@ -11,7 +14,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "bench": "tsc && node --expose-gc dist/benchmark",
+    "bench": "tsc -p tsconfig.benchmark.json && cp benchmark/package.json dist/benchmark/package.json && cd dist/benchmark && node index.js",
     "format": "prettier --write .",
     "test": "tsc && c8 --reporter lcov --reporter text node --trace-warnings --test dist/test",
     "test:only": "tsc; node --trace-warnings --test-only --test dist/test"
@@ -20,17 +23,21 @@
     "csstype": "^3.1.2"
   },
   "devDependencies": {
-    "@arthurfiorette/prettier-config": "^1.0.9",
-    "@types/node": "^20.4.2",
+    "@arthurfiorette/prettier-config": "^1.0.11",
+    "@types/node": "^20.8.3",
     "benny": "^3.7.1",
     "c8": "^8.0.1",
-    "prettier": "^3.0.0",
-    "tslib": "^2.6.1",
+    "common-tags": "^1.8.2",
+    "mitata": "^0.1.6",
+    "prettier": "^3.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tslib": "^2.6.2",
     "typed-html": "^3.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
-    "@kitajs/ts-html-plugin": ">=1.1"
+    "@kitajs/ts-html-plugin": ">=1.2.0"
   },
   "packageManager": "pnpm@8.7.5",
   "engines": {

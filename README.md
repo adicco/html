@@ -789,7 +789,7 @@ recommend using it**.
 
 Just add this triple slash directive to the top of your file:
 
-```tsx
+```html
 /// <reference types="@kitajs/html/all-types.d.ts" />
 ```
 
@@ -801,49 +801,55 @@ This package is just a string builder on steroids, as you can see
 [how this works](#how-it-works). This means that most way to isolate performance
 differences is to micro benchmark.
 
-You can run this yourself by running `pnpm bench`. The benchmark below ran with a 13600k
-@5.1GHz machine.
+The below benchmark compares this package with other popular HTML builders, like React,
+Typed Html and Common Tags.
 
-```markdown
-# Benchmark
+You can run this yourself by running `pnpm bench`.
 
-- 2023-09-23T19:26:24.506Z
-- Node: v20.7.0
-- V8: 11.3.244.8-node.15
-- OS: linux
-- Arch: x64
+```java
+cpu: 13th Gen Intel(R) Core(TM) i5-13600K
+runtime: node v20.8.1 (x64-linux)
 
-## Hello World
+benchmark        time (avg)             (min … max)       p75       p99      p995
+--------------------------------------------------- -----------------------------
+• Many Components (31.4kb)
+--------------------------------------------------- -----------------------------
+Typed Html     37.9 µs/iter     (31.23 µs … 1.9 ms)  34.27 µs 140.45 µs 176.84 µs
+KitaJS/Html   10.52 µs/iter   (8.31 µs … 804.52 µs)   9.79 µs  23.53 µs  59.89 µs
+Common Tags    78.2 µs/iter  (67.58 µs … 458.58 µs)  74.71 µs 232.46 µs 268.12 µs
+React         23.05 µs/iter    (17.38 µs … 1.29 ms)  22.12 µs 112.88 µs 151.97 µs
 
-| Runs   | @kitajs/html | typed-html | +     | .compile() | + / @kitajs/html | + / typed-html |
-| ------ | ------------ | ---------- | ----- | ---------- | ---------------- | -------------- |
-| 10     | 0.0071ms     | 0.0123ms   | 1.72x | 0.0459ms   | 0.16x            | 0.27x          |
-| 10000  | 0.4891ms     | 1.9689ms   | 4.03x | 0.4315ms   | 1.13x            | 4.56x          |
-| 100000 | 4.717ms      | 13.653ms   | 2.89x | 1.5551ms   | 3.03x            | 8.78x          |
+summary for Many Components (31.4kb)
+  KitaJS/Html
+   2.19x faster than React
+   3.6x faster than Typed Html
+   7.44x faster than Common Tags
 
-## Mdn Homepage
+• MdnHomepage (66.7Kb)
+--------------------------------------------------- -----------------------------
+Typed Html   314.38 µs/iter   (266.98 µs … 4.48 ms) 306.37 µs 526.09 µs 585.44 µs
+KitaJS/Html   62.27 µs/iter  (49.86 µs … 445.16 µs)  58.49 µs 261.97 µs  285.1 µs
+Common Tags  138.61 µs/iter    (107.26 µs … 3.8 ms) 119.71 µs 309.04 µs   2.33 ms
+React        156.75 µs/iter  (134.97 µs … 485.2 µs) 150.73 µs 361.63 µs 388.53 µs
 
-| Runs   | @kitajs/html | typed-html   | +     | .compile() | + / @kitajs/html | + / typed-html |
-| ------ | ------------ | ------------ | ----- | ---------- | ---------------- | -------------- |
-| 10     | 0.6441ms     | 3.0466ms     | 4.73x | 0.0029ms   | 221.57x          | 1048.03x       |
-| 10000  | 601.5763ms   | 3013.5356ms  | 5.01x | 0.2293ms   | 2623.21x         | 13140.72x      |
-| 100000 | 5953.055ms   | 30076.7341ms | 5.05x | 1.1917ms   | 4995.36x         | 25238.17x      |
+summary for MdnHomepage (66.7Kb)
+  KitaJS/Html
+   2.23x faster than Common Tags
+   2.52x faster than React
+   5.05x faster than Typed Html
 
-## Many Props
+• Many Props (7.4kb)
+--------------------------------------------------- -----------------------------
+Typed Html    74.08 µs/iter    (66.31 µs … 1.46 ms)  70.92 µs 206.54 µs 246.31 µs
+KitaJS/Html   16.98 µs/iter  (15.12 µs … 385.35 µs)  16.41 µs  30.86 µs  62.49 µs
+Common Tags   31.12 µs/iter  (27.68 µs … 469.77 µs)  29.92 µs   72.3 µs 106.25 µs
+React         45.02 µs/iter  (39.38 µs … 425.16 µs)  43.02 µs 139.04 µs 218.36 µs
 
-| Runs   | @kitajs/html | typed-html  | +     | .compile() | + / @kitajs/html | + / typed-html |
-| ------ | ------------ | ----------- | ----- | ---------- | ---------------- | -------------- |
-| 10     | 0.1971ms     | 0.9631ms    | 4.89x | 0.0026ms   | 76.26x           | 372.58x        |
-| 10000  | 164.2186ms   | 698.8376ms  | 4.26x | 0.682ms    | 240.78x          | 1024.67x       |
-| 100000 | 1688.9518ms  | 7065.3811ms | 4.18x | 2.8688ms   | 588.73x          | 2462.82x       |
-
-## Many Components
-
-| Runs   | @kitajs/html | typed-html  | +     | .compile() | + / @kitajs/html | + / typed-html |
-| ------ | ------------ | ----------- | ----- | ---------- | ---------------- | -------------- |
-| 10     | 0.2367ms     | 0.4481ms    | 1.89x | 0.0041ms   | 57.64x           | 109.14x        |
-| 10000  | 148.0245ms   | 368.8733ms  | 2.49x | 1.2694ms   | 116.61x          | 290.6x         |
-| 100000 | 1548.758ms   | 3748.9902ms | 2.42x | 6.009ms    | 257.74x          | 623.9x         |
+summary for Many Props (7.4kb)
+  KitaJS/Html
+   1.83x faster than Common Tags
+   2.65x faster than React
+   4.36x faster than Typed Html
 ```
 
 <br />
